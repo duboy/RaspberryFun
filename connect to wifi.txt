@@ -1,0 +1,17 @@
+
+Add your wpa_supplicant.conf file
+Create a file in this directory called wpa_supplicant.conf. The file should contain the following details:
+
+For Raspbian Jessie:
+network={
+    ssid="YOUR_NETWORK_NAME"
+    psk="YOUR_PASSWORD"
+    key_mgmt=WPA-PSK
+}
+
+Unsecured Networks
+
+network={
+    ssid="testing"
+    key_mgmt=NONE
+}
