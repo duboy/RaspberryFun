@@ -13,3 +13,10 @@ devices = scanner.scan(10.0)
 for dev in devices:
 	if (dev.addr == "f0:a0:ee:76:4d:68") :
 		print "finded!"
+		Yeelight.set_bright(1, 90)
+		detection_thread = Thread(target=Yeelight.bulbs_detection_loop)
+		detection_thread.start()
+		sleep(0.2)
+
+scanner.clear()
+		
