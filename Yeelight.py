@@ -238,19 +238,20 @@ def handle_user_input():
     if not valid_cli:
       print "error: invalid command line:", command_line
       print_cli_usage()
-
-## main starts here
-# print welcome message first
-print "Welcome to Yeelight WifiBulb Lan controller"
-print_cli_usage
-# start the bulb detection thread
-detection_thread = Thread(target=bulbs_detection_loop)
-detection_thread.start()
-# give detection thread some time to collect bulb info
-sleep(0.2)
-# user interaction loop
-handle_user_input()
-# user interaction end, tell detection thread to quit and wait
-RUNNING = False
-detection_thread.join()
-# done
+	  
+if __name__ == '__main__':
+	## main starts here
+	# print welcome message first
+	print "Welcome to Yeelight WifiBulb Lan controller"
+	print_cli_usage
+	# start the bulb detection thread
+	detection_thread = Thread(target=bulbs_detection_loop)
+	detection_thread.start()
+	# give detection thread some time to collect bulb info
+	sleep(0.2)
+	# user interaction loop
+	handle_user_input()
+	# user interaction end, tell detection thread to quit and wait
+	RUNNING = False
+	detection_thread.join()
+	# done

@@ -16,3 +16,5 @@ hcitool lescan
 在gatttool下， 
 开始连接设备 ： connect 
 输入 ： help查看其他指令
+
+f0:a0:ee:76:4d:68
