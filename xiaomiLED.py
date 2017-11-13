@@ -195,7 +195,7 @@ def handle_user_input():
 	for dev in devices:
 		if (dev.addr == "f0:a0:ee:76:4d:68") :
 			print "finded!"
-			set_bright(1, 90)			
+			operate_on_bulb(1, "set_power", "off")			
 			scanner.clear();
 
 
