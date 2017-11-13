@@ -1,4 +1,5 @@
 from bluepy.btle import Scanner, DefaultDelegate
+import Yeelight
 class ScanDelegate(DefaultDelegate): 
     def __init__(self): 
         DefaultDelegate.__init__(self)
@@ -7,7 +8,8 @@ class ScanDelegate(DefaultDelegate):
             print "Discovered device", dev.addr 
         elif isNewData: 
             print "Received new data from", dev.addr
-scanner = Scanner().withDelegate(ScanDelegate()) 
-devices = scanner.scan(1.0)
+scanner = Scanner()#.withDelegate(ScanDelegate()) 
+devices = scanner.scan(10.0)
 for dev in devices:
-	print devices.addr;
+	if (dev.addr == "f0:a0:ee:76:4d:68") :
+		print "finded!"

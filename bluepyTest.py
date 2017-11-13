@@ -3,7 +3,7 @@
 from __future__ import print_function
 import sys
 import binascii
-import btle
+from bluepy import btle
 import os
 
 ble_conn = None
