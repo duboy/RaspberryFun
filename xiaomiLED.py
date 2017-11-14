@@ -191,7 +191,8 @@ def handle_user_input():
   '''
   while True:
 	command_line = raw_input("Enter a command: ")
-	if command_line == q :
+	if command_line == "q" :
+		print "quit"
 		return
 	else :
 		scanner = Scanner()#.withDelegate(ScanDelegate()) 
@@ -199,7 +200,7 @@ def handle_user_input():
 		for dev in devices:
 			if (dev.addr == "f0:a0:ee:76:4d:68") :
 				print "finded!"
-				operate_on_bulb(1, "set_power", "off")			
+				operate_on_bulb(1, "set_power", "\"on\"")			
 				scanner.clear();
 				break;
 	
