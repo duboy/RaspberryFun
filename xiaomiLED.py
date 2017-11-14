@@ -227,7 +227,11 @@ if __name__ == '__main__':
 	# give detection thread some time to collect bulb info
 	sleep(0.2)
 	# user interaction loop
-	handle_user_input()
+	try :
+		handle_user_input()
+	except KeyboardInterrupt:
+		print "Ctrl-c pressed ..."
+		RUNNING = False
 	# user interaction end, tell detection thread to quit and wait
 	RUNNING = False
 	detection_thread.join()
