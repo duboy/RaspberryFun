@@ -190,13 +190,19 @@ def handle_user_input():
   User interaction loop. 
   '''
   while True:
-	scanner = Scanner()#.withDelegate(ScanDelegate()) 
-	devices = scanner.scan(5.0)
-	for dev in devices:
-		if (dev.addr == "f0:a0:ee:76:4d:68") :
-			print "finded!"
-			operate_on_bulb(1, "set_power", "off")			
-			scanner.clear();
+	command_line = raw_input("Enter a command: ")
+	if command_line == q :
+		return
+	else :
+		scanner = Scanner()#.withDelegate(ScanDelegate()) 
+		devices = scanner.scan(5.0)
+		for dev in devices:
+			if (dev.addr == "f0:a0:ee:76:4d:68") :
+				print "finded!"
+				operate_on_bulb(1, "set_power", "off")			
+				scanner.clear();
+				break;
+	
 
 
 	  
