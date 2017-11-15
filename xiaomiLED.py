@@ -175,18 +175,26 @@ def handle_scan():
   '''
   User interaction loop. 
   '''
+  power = "off"
   while True:
     if  found_miband() :
       print "finded!"
-      operate_on_bulb(1, "set_power", "\"on\"")    
-      print display_bulb(1)
-      sleep(0.2)
+	  if power == "off"
+        operate_on_bulb(1, "set_power", "\"on\"")   #power on 
+		sleep(0.2)
+		power = display_bulb(1)
+        print power
+      else :
+        break
+      
     else :
       print "cannot find!"
-      operate_on_bulb(1, "set_power", "\"off\"")
-      sleep(0.2)
-      print display_bulb(1)
-    
+	    if power == "on"
+          operate_on_bulb(1, "set_power", "\"off\"") # power off
+          sleep(0.2)
+          power = display_bulb(1)
+		  print power
+	  
 if __name__ == '__main__':
   ## main starts here
   # print welcome message first
