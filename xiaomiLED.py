@@ -167,7 +167,7 @@ def handle_scan():
   '''
   scanner = Scanner()
   while True:
-	devices = scanner.scan(5.0)
+	devices = scanner.scan(10.0)
 	for dev in devices:
 		if (dev.addr == "f0:a0:ee:76:4d:68") :
 			print "finded!"
@@ -175,7 +175,7 @@ def handle_scan():
 			print display_bulb(1)
 			sleep(0.2)
 			scanner.clear();
-			break;
+		break;
 	print "cannot find!"
 	operate_on_bulb(1, "set_power", "\"off\"")
 	sleep(0.2)
