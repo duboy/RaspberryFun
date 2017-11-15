@@ -163,12 +163,12 @@ def operate_on_bulb(idx, method, params):
 
 def found_miband():
   scanner = Scanner()
-  devices = scanner.scan(10.0)
+  devices = scanner.scan(5.0)
   for dev in devices:
     if dev.addr == "f0:a0:ee:76:4d:68" :
-	  return True
-	 else :
-	   continue
+      return True
+    else :
+      continue
   return False
   
 def handle_scan():
@@ -181,7 +181,7 @@ def handle_scan():
       operate_on_bulb(1, "set_power", "\"on\"")    
       print display_bulb(1)
       sleep(0.2)
-	else :
+    else :
       print "cannot find!"
       operate_on_bulb(1, "set_power", "\"off\"")
       sleep(0.2)
