@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-from bluepy.btle import Scanner, DefaultDelegate
 import socket  
 import time
 import fcntl
@@ -133,16 +132,14 @@ def display_bulb(idx):
     print "error: invalid bulb idx"
     return
   bulb_ip = bulb_idx2ip[idx]
-  # model = detected_bulbs[bulb_ip][1]
+  model = detected_bulbs[bulb_ip][1]
   power = detected_bulbs[bulb_ip][2]
-  # only return power status
-  return power
-  # bright = detected_bulbs[bulb_ip][3]
-  # rgb = detected_bulbs[bulb_ip][4]
-  # print str(idx) + ": ip=" \
-    # +bulb_ip + ",model=" + model \
-    # +",power=" + power + ",bright=" \
-    # + bright + ",rgb=" + rgb
+  bright = detected_bulbs[bulb_ip][3]
+  rgb = detected_bulbs[bulb_ip][4]
+  print str(idx) + ": ip=" \
+    +bulb_ip + ",model=" + model \
+    +",power=" + power + ",bright=" \
+    + bright + ",rgb=" + rgb
 
 def display_bulbs():
   print str(len(detected_bulbs)) + " managed bulbs"
@@ -178,41 +175,82 @@ def toggle_bulb(idx):
 def set_bright(idx, bright):
   operate_on_bulb(idx, "set_bright", str(bright))
 
+def print_cli_usage():
+  print "Usage:"
+  print "  q|quit: quit bulb manager"
+  print "  h|help: print this message"
+  print "  t|toggle <idx>: toggle bulb indicated by idx"
+  print "  b|bright <idx> <bright>: set brightness of bulb with label <idx>"
+  print "  r|refresh: refresh bulb list"
+  print "  l|list: lsit all managed bulbs"
+  
 def handle_user_input():
   '''
   User interaction loop. 
   '''
   while True:
-	scanner = Scanner()#.withDelegate(ScanDelegate()) 
-	devices = scanner.scan(7.0)
-	for dev in devices:
-		if (dev.addr == "f0:a0:ee:76:4d:68") :
-			print "finded!"
-			operate_on_bulb(1, "set_power", "\"on\"")		
-			print display_bulb(1)
-			scanner.clear();
-			break;
-		else :
-			print "cannot find!"
-			operate_on_bulb(1, "set_power", "\"off\"")
-			print display_bulb(1)
-	  
-if __name__ == '__main__':
-	## main starts here
-	# print welcome message first
-	print "Welcome to Yeelight WifiBulb Lan controller"
-	# start the bulb detection thread
-	detection_thread = Thread(target=bulbs_detection_loop)
-	detection_thread.start()
-	# give detection thread some time to collect bulb info
-	sleep(0.2)
-	# user interaction loop
-	try :
-		handle_user_input()
-	except KeyboardInterrupt:
-		print "Ctrl-c pressed ..."
-		RUNNING = False
-	# user interaction end, tell detection thread to quit and wait
-	RUNNING = False
-	detection_thread.join()
-	# done
+    command_line = raw_input("Enter a command: ")
+    valid_cli=True
+    debug("command_line=" + command_line)
+    command_line.lower() # convert all user input to lower case, i.e. cli is caseless
+    argv = command_line.split() # i.e. don't allow parameters with space characters
+    if len(argv) == 0:
+      continue
+    if argv[0] == "q" or argv[0] == "quit":
+      print "Bye!"
+      return
+    elif argv[0] == "l" or argv[0] == "list":
+      display_bulbs()
+    elif argv[0] == "r" or argv[0] == "refresh":
+      detected_bulbs.clear()
+      bulb_idx2ip.clear()
+      send_search_broadcast()
+      #sleep(0.5)
+      #display_bulbs()
+    elif argv[0] == "h" or argv[0] == "help":
+      print_cli_usage()
+      continue
+    elif argv[0] == "t" or argv[0] == "toggle":
+      if len(argv) != 2:
+        valid_cli=False
+      else:
+        try:
+          i = int(float(argv[1]))
+          toggle_bulb(i)
+        except:
+          valid_cli=False
+    elif argv[0] == "b" or argv[0] == "bright":
+      if len(argv) != 3:
+        print "incorrect argc"
+        valid_cli=False
+      else:
+        try:
+          idx = int(float(argv[1]))
+          print "idx", idx
+          bright = int(float(argv[2]))
+          print "bright", bright
+          set_bright(idx, bright)
+        except:
+          valid_cli=False
+    else:
+      valid_cli=False
+          
+    if not valid_cli:
+      print "error: invalid command line:", command_line
+      print_cli_usage()
+
+## main starts here
+# print welcome message first
+print "Welcome to Yeelight WifiBulb Lan controller"
+print_cli_usage
+# start the bulb detection thread
+detection_thread = Thread(target=bulbs_detection_loop)
+detection_thread.start()
+# give detection thread some time to collect bulb info
+sleep(0.2)
+# user interaction loop
+handle_user_input()
+# user interaction end, tell detection thread to quit and wait
+RUNNING = False
+detection_thread.join()
+# done
