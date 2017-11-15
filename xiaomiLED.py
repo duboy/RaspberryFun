@@ -137,17 +137,6 @@ def display_bulb(idx):
   power = detected_bulbs[bulb_ip][2]
   # only return power status
   return power
-  # bright = detected_bulbs[bulb_ip][3]
-  # rgb = detected_bulbs[bulb_ip][4]
-  # print str(idx) + ": ip=" \
-    # +bulb_ip + ",model=" + model \
-    # +",power=" + power + ",bright=" \
-    # + bright + ",rgb=" + rgb
-
-def display_bulbs():
-  print str(len(detected_bulbs)) + " managed bulbs"
-  for i in range(1, len(detected_bulbs)+1):
-    display_bulb(i)
 
 def operate_on_bulb(idx, method, params):
   '''
@@ -172,30 +161,26 @@ def operate_on_bulb(idx, method, params):
   except Exception as e:
     print "Unexpected error:", e
 
-def toggle_bulb(idx):
-  operate_on_bulb(idx, "toggle", "")
-
-def set_bright(idx, bright):
-  operate_on_bulb(idx, "set_bright", str(bright))
-
-def handle_user_input():
+def handle_scan():
   '''
   User interaction loop. 
   '''
+  scanner = Scanner()
   while True:
-	scanner = Scanner()#.withDelegate(ScanDelegate()) 
-	devices = scanner.scan(7.0)
+	devices = scanner.scan(5.0)
 	for dev in devices:
 		if (dev.addr == "f0:a0:ee:76:4d:68") :
 			print "finded!"
 			operate_on_bulb(1, "set_power", "\"on\"")		
 			print display_bulb(1)
+			sleep(0.2)
 			scanner.clear();
 			break;
-		else :
-			print "cannot find!"
-			operate_on_bulb(1, "set_power", "\"off\"")
-			print display_bulb(1)
+	print "cannot find!"
+	operate_on_bulb(1, "set_power", "\"off\"")
+	sleep(0.2)
+	print display_bulb(1)
+	scanner.clear();
 	  
 if __name__ == '__main__':
 	## main starts here
@@ -205,10 +190,10 @@ if __name__ == '__main__':
 	detection_thread = Thread(target=bulbs_detection_loop)
 	detection_thread.start()
 	# give detection thread some time to collect bulb info
-	sleep(0.2)
+	sleep(1)
 	# user interaction loop
 	try :
-		handle_user_input()
+		handle_scan()
 	except KeyboardInterrupt:
 		print "Ctrl-c pressed ..."
 		RUNNING = False
