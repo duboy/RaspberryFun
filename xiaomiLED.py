@@ -191,7 +191,8 @@ def handle_scan():
       
     else :
       print "missCount: " + str(missCount)
-      if (++missCount > 3) :
+      missCount += 1
+      if missCount > 3 :
         missCount = 0	  
         if display_bulb(1) == "on" :
           operate_on_bulb(1, "set_power", "\"off\"") # power off
