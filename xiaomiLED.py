@@ -132,15 +132,17 @@ def display_bulb(idx):
   if not bulb_idx2ip.has_key(idx):
     print "error: invalid bulb idx"
     return
-  bulb_ip = bulb_idx2ip[idx]
-  model = detected_bulbs[bulb_ip][1]
+  # bulb_ip = bulb_idx2ip[idx]
+  # model = detected_bulbs[bulb_ip][1]
   power = detected_bulbs[bulb_ip][2]
-  bright = detected_bulbs[bulb_ip][3]
-  rgb = detected_bulbs[bulb_ip][4]
-  print str(idx) + ": ip=" \
-    +bulb_ip + ",model=" + model \
-    +",power=" + power + ",bright=" \
-    + bright + ",rgb=" + rgb
+  # only return power status
+  return power
+  # bright = detected_bulbs[bulb_ip][3]
+  # rgb = detected_bulbs[bulb_ip][4]
+  # print str(idx) + ": ip=" \
+    # +bulb_ip + ",model=" + model \
+    # +",power=" + power + ",bright=" \
+    # + bright + ",rgb=" + rgb
 
 def display_bulbs():
   print str(len(detected_bulbs)) + " managed bulbs"
@@ -176,15 +178,6 @@ def toggle_bulb(idx):
 def set_bright(idx, bright):
   operate_on_bulb(idx, "set_bright", str(bright))
 
-def print_cli_usage():
-  print "Usage:"
-  print "  q|quit: quit bulb manager"
-  print "  h|help: print this message"
-  print "  t|toggle <idx>: toggle bulb indicated by idx"
-  print "  b|bright <idx> <bright>: set brightness of bulb with label <idx>"
-  print "  r|refresh: refresh bulb list"
-  print "  l|list: lsit all managed bulbs"
-  
 def handle_user_input():
   '''
   User interaction loop. 
@@ -195,24 +188,14 @@ def handle_user_input():
 	for dev in devices:
 		if (dev.addr == "f0:a0:ee:76:4d:68") :
 			print "finded!"
-			operate_on_bulb(1, "set_power", "\"on\"")			
+			operate_on_bulb(1, "set_power", "\"on\"")		
+			print display_bulb
 			scanner.clear();
 			break;
 		else :
 			print "cannot find!"
 			operate_on_bulb(1, "set_power", "\"off\"")
-	
-
-
-	  
-class ScanDelegate(DefaultDelegate): 
-    def __init__(self): 
-        DefaultDelegate.__init__(self)
-    def handleDiscovery(self, dev, isNewDev, isNewData): 
-        if isNewDev: 
-            print "Discovered device", dev.addr 
-        elif isNewData: 
-            print "Received new data from", dev.addr
+			print display_bulb
 	  
 if __name__ == '__main__':
 	## main starts here
