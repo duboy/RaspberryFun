@@ -1,4 +1,7 @@
 # RaspberryFun
+## 说明
+```使用树莓派扫描小米手环蓝牙，用以打开或关闭小米台灯
+
 使用 hcitool & gatttool
 
 安装了bluez协议栈后提供的工具，简单操作如下。
